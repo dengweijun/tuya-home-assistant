@@ -98,9 +98,11 @@ DPCODE_AP_PM25 = "pm25"                 # PM25 - no units
 DPCODE_AP_FILTER = "filter"             # Filter cartridge utilization [%]
 DPCODE_AP_TEMP = "temp"                 # Temperature [℃]
 DPCODE_AP_HUMIDITY = "humidity"         # Humidity [%]
-DPCODE_AP_TVOC = "tvoc"                 # Total Volatile Organic Compounds [ppm]
+# Total Volatile Organic Compounds [ppm]
+DPCODE_AP_TVOC = "tvoc"
 DPCODE_AP_ECO2 = "eco2"                 # Carbon dioxide concentration [ppm]
-DPCODE_AP_FDAYS = "filter_days"         # Remaining days of the filter cartridge [day]
+# Remaining days of the filter cartridge [day]
+DPCODE_AP_FDAYS = "filter_days"
 DPCODE_AP_TTIME = "total_time"          # Total operating time [minute]
 DPCODE_AP_TPM = "total_pm"              # Total absorption of particles [mg]
 DPCODE_AP_COUNTDOWN = "countdown_left"  # Remaining time of countdown [minute]
@@ -120,7 +122,8 @@ async def async_setup_entry(
     """Set up tuya sensors dynamically through tuya discovery."""
     _LOGGER.info("sensor init")
 
-    hass.data[DOMAIN][TUYA_HA_TUYA_MAP].update({DEVICE_DOMAIN: TUYA_SUPPORT_TYPE})
+    hass.data[DOMAIN][TUYA_HA_TUYA_MAP].update(
+        {DEVICE_DOMAIN: TUYA_SUPPORT_TYPE})
 
     async def async_discover_device(dev_ids):
         """Discover and add a discovered tuya sensor."""
@@ -424,7 +427,7 @@ def _setup_entities(hass, device_ids: List):
                         DEVICE_CLASS_ENERGY,
                         DPCODE_FORWARD_ENERGY_TOTAL,
                         json.loads(device.status_range.get(DPCODE_FORWARD_ENERGY_TOTAL).values).get(
-                        "unit", 0
+                            "unit", 0
                         ),
                     )
                 )
@@ -460,6 +463,7 @@ def _setup_entities(hass, device_ids: List):
                         )
     return entities
 
+
 class TuyaHaSensor(TuyaHaDevice, SensorEntity):
     """Tuya Sensor Device."""
 
@@ -491,7 +495,8 @@ class TuyaHaSensor(TuyaHaDevice, SensorEntity):
     def state(self):
         """Return the state of the sensor."""
         if self.tuya_device.category == "zndb" and self._code.startswith("phase_"):
-            __value = json.loads(self.tuya_device.status.get(self._code[:7])).get(self._code[8:])
+            __value = json.loads(self.tuya_device.status.get(
+                self._code[:7])).get(self._code[8:])
             return __value
 
         __value = self.tuya_device.status.get(self._code)
